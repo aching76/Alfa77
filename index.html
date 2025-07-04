@@ -2,14 +2,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DreamGen Free</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DreamGen Lite</title>
+  <script src="script.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Welcome to DreamGen Free</h1>
-    <p>This is the landing page.</p>
-    <script src="script.js"></script>
+<body class="bg-gray-900 text-white flex flex-col items-center min-h-screen p-6">
+  <h1 class="text-3xl font-bold mb-6">DreamGen Lite</h1>
+  <input id="prompt" type="text" placeholder="Describe your image..." class="w-full max-w-md p-3 rounded text-black" />
+  <button onclick="generateImage()" class="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded">Generate</button>
+  <div id="result" class="mt-8 flex justify-center">
+    <img id="image" src="" alt="" class="max-w-full rounded shadow-lg hidden"/>
+  </div>
 </body>
 </html>
