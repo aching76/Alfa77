@@ -1,25 +1,35 @@
 
-async function generateImage() {
-  const prompt = document.getElementById("prompt").value;
-  const image = document.getElementById("image");
-  image.classList.add("hidden");
+async function sendMessage() {
+  const input = document.getElementById("user-input");
+  const chatBox = document.getElementById("chat-box");
+  const userMessage = input.value.trim();
+  if (!userMessage) return;
 
-  const response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2", {
-    method: "POST",
-    headers: {
-      "Authorization": "Bearer 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", // token publik demo
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ inputs: prompt })
-  });
+  // Tampilkan pesan pengguna
+  chatBox.innerHTML += `<div class='user'><b>Kamu:</b> ${userMessage}</div>`;
+  input.value = "";
 
-  if (!response.ok) {
-    alert("Failed to generate image.");
-    return;
+  try {
+    const response = await fetch("https://api.chatanywhere.tech/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer free"
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: userMessage }]
+      })
+    });
+    
+    const data = await response.json();
+    const aiReply = data.choices?.[0]?.message?.content || "Maaf, tidak ada jawaban.";
+
+    // Tampilkan jawaban AI
+    chatBox.innerHTML += `<div class='ai'><b>AI:</b> ${aiReply}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+  } catch (error) {
+    chatBox.innerHTML += `<div class='ai'><b>AI:</b> Terjadi kesalahan saat menghubungi server.</div>`;
   }
-
-  const blob = await response.blob();
-  const url = URL.createObjectURL(blob);
-  image.src = url;
-  image.classList.remove("hidden");
 }
